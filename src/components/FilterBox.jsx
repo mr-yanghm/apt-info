@@ -1,31 +1,39 @@
 import React from 'react';
 
-const FilterBox = ({ filters }) => {
+const Filter = ({ filter, onFilterDelete, index }) => {
+    const onDelete = () => {
+        onFilterDelete(filter);
+    }
+    return (
+        <tr >
+            <td>{filter.aptName}</td>
+            <td>{filter.aptSize}</td>
+            <td><button className="habit-button habit-increase" onClick={onDelete}><i className="fas fa-minus-square"></i></button></td>
+        </tr>
+    )
+}
+
+const FilterBox = ({ filters, onFilterDelete }) => {
     return (
         <div>
             <table>
                 <thead>
                     <tr>
                         <th>아파트명</th>
-                        <th>전용면적</th>
-                        <th>삭제</th>
+                        <th colSpan="2">전용면적</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         filters && filters.map((filter, index) => {
                             return (
-                                <tr key={index}>
-                                    <td>{filter.aptName}</td>
-                                    <td>{filter.aptSize}</td>
-                                    <td>필터삭제</td>
-                                </tr>
+                                <Filter key={index} filter={filter} onFilterDelete={onFilterDelete} />
                             );
                         })
                     }
                 </tbody>
             </table>
-        </div>
+        </div >
     )
 };
 

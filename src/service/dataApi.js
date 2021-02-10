@@ -16,20 +16,35 @@ const OpenAPI_APT = function () {
 
   this.getFilterAptInfo = function ({
     items,
-    filterAptName = "율곡",
+    filterAptName = "",
     filterAptSize = "",
   }) {
+    // console.log(
+    //   `filterAptName : ${filterAptName}, filterAptSize : ${filterAptSize}`
+    // );
     const filterItems = items
       .filter((data) => {
         // return data.아파트 === filterAptName;
-        if (filterAptSize) {
+        if (filterAptName && filterAptSize) {
           return (
             data.아파트.indexOf(filterAptName) > -1 &&
             data.전용면적 === Number(filterAptSize)
           );
-        } else {
+        } else if (filterAptName) {
           return data.아파트.indexOf(filterAptName) > -1;
+        } else if (filterAptSize) {
+          return data.전용면적 === Number(filterAptSize);
+        } else {
+          return data;
         }
+        // if (filterAptSize) {
+        //   return (
+        //     data.아파트.indexOf(filterAptName) > -1 &&
+        //     data.전용면적 === Number(filterAptSize)
+        //   );
+        // } else {
+        //   return data.아파트.indexOf(filterAptName) > -1;
+        // }
       })
       .map((data) => {
         return {

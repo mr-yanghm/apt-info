@@ -1,5 +1,14 @@
 import React from "react";
 
+function to_date_format(date_str) {
+    const gubun = '-';
+    var yyyyMMdd = String(date_str);
+    var sYear = yyyyMMdd.substring(0, 4);
+    var sMonth = yyyyMMdd.substring(4, 6);
+    var sDate = yyyyMMdd.substring(6, 8);
+
+    return sYear + gubun + sMonth + gubun + sDate;
+}
 const AptInfo = ({ aptInfo: { highestPriceApts, newestDealApts }, nearAptPriceInfo }) => {
     // console.log();
 
@@ -28,11 +37,11 @@ const AptInfo = ({ aptInfo: { highestPriceApts, newestDealApts }, nearAptPriceIn
                                     <td>{newestDealApt.거래금액}</td>
                                     <td>
                                         {
-                                            highestValue && highestValue[0].거래금액
+                                            highestValue && Number(highestValue[0].거래금액).toLocaleString('ko-KR')
                                         }
                                     </td>
                                     <td>{newestDealApt.층}층</td>
-                                    <td>{newestDealApt.거래년월}</td>
+                                    <td>{to_date_format(newestDealApt.거래년월)}</td>
                                 </tr>
                             )
                         })
@@ -57,14 +66,14 @@ const AptInfo = ({ aptInfo: { highestPriceApts, newestDealApts }, nearAptPriceIn
                             return (
                                 <tr key={index}>
                                     <th>{apt.아파트}</th>
-                                    <th>{apt.전용면적}</th>
-                                    <td>{apt.거래금액}</td>
+                                    <td>{apt.전용면적}</td>
+                                    <td>{Number(apt.거래금액).toLocaleString('ko-KR')}</td>
                                     <td>
                                         {
-                                            apt.최고가
+                                            Number(apt.최고가).toLocaleString('ko-KR')
                                         }
                                     </td>
-                                    <td>{apt.거래년월}</td>
+                                    <td>{to_date_format(apt.거래년월)}</td>
                                 </tr>
                             )
                         })

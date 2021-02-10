@@ -1,7 +1,7 @@
 import React from 'react';
 import FilterBox from './FilterBox';
 
-const SearchBar = ({ searchRangeList, handleChange, onChange, onFilterRegist, filters }) => {
+const SearchBar = ({ searchRangeList, handleChange, onChange, onFilterRegist, filters, onFilterDelete }) => {
     return (
         <>
             <div>
@@ -21,7 +21,7 @@ const SearchBar = ({ searchRangeList, handleChange, onChange, onFilterRegist, fi
                 <label htmlFor="aptName">아파트명 : </label><input type="text" name="aptName" id="aptName" onChange={onChange} />
                 <label htmlFor="aptSize">전용면적 : </label><input type="text" name="aptSize" id="aptSize" onChange={onChange} />
                 <button onClick={onFilterRegist}>등록</button>
-                <FilterBox filters={filters} />
+                <FilterBox filters={filters} onFilterDelete={onFilterDelete} />
             </div>
         </>
     )
