@@ -1,15 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import "./app.css";
 import AptInfo from "./components/AptInfo";
-import SearchBar from './components/SearchBar';
-import useInputs from './Hooks/useInputs';
+import Footer from "./components/Footer";
+import SearchBar from "./components/SearchBar";
+import useInputs from "./Hooks/useInputs";
 
 const initialState = {
   searchRangeList: [1],
   selectedRangeIndex: 0,
-  filters: [
-  ]
-}
+  filters: [],
+};
 
 function reducer(state, action) {
   switch (action.type) {
@@ -22,7 +28,9 @@ function reducer(state, action) {
     case "REMOVE_FILTER":
       return {
         ...state,
-        filters: state.filters.filter((filter) => filter.id !== action.filter.id),
+        filters: state.filters.filter(
+          (filter) => filter.id !== action.filter.id
+        ),
       };
     default:
       return state;
@@ -30,8 +38,12 @@ function reducer(state, action) {
 }
 
 const App = ({ openApi }) => {
-  const [searchRangeList, setSearchRangeList] = useState(initialState.searchRangeList);
-  const [selectedRangeIndex, setSelectedRangeIndex] = useState(initialState.selectedRangeIndex);
+  const [searchRangeList, setSearchRangeList] = useState(
+    initialState.searchRangeList
+  );
+  const [selectedRangeIndex, setSelectedRangeIndex] = useState(
+    initialState.selectedRangeIndex
+  );
   const [allAptInfo, setAllAptInfo] = useState([]);
   const [yulgokAptInfo, setYulgokAptInfo] = useState({});
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -43,45 +55,58 @@ const App = ({ openApi }) => {
   });
 
   useEffect(() => {
-    openApi.getAllAptInfo({ calcMonth: searchRangeList[selectedRangeIndex] }).then((data) => {
-      setAllAptInfo(data);
-      setYulgokAptInfo(openApi.getFilterAptInfo({ items: data, filterAptName: "율곡" }));
-      setNearAptPriceInfo(openApi.getFilterAptInfo({ items: data }).newestDealApts);
-      // console.log(openApi.getFilterAptInfo({ items: data }));
+    openApi
+      .getAllAptInfo({ calcMonth: searchRangeList[selectedRangeIndex] })
+      .then((data) => {
+        setAllAptInfo(data);
+        setYulgokAptInfo(
+          openApi.getFilterAptInfo({ items: data, filterAptName: "율곡" })
+        );
+        setNearAptPriceInfo(
+          openApi.getFilterAptInfo({ items: data }).newestDealApts
+        );
+        // console.log(openApi.getFilterAptInfo({ items: data }));
 
-      const initFilter = [
-        { aptName: '한라', aptSize: 41.85 },
-        { aptName: '한라', aptSize: 51.66 },
-        { aptName: '래미안', aptSize: 59.94 },
-        { aptName: '충무', aptSize: 41.4 },
-        { aptName: '충무', aptSize: 41.85 },
-        { aptName: '충무', aptSize: 42.75 },
-        { aptName: '충무', aptSize: 44.06 },
-        { aptName: '세종', aptSize: 58.46 },
-        { aptName: '세종', aptSize: 58.71 },
-        { aptName: '우륵', aptSize: 58.46 },
-        { aptName: '우륵', aptSize: 58.71 },
-      ];
-      for (const filter of initFilter) {
-        dispatch({
-          type: "REGIST_FILTER",
-          filter: {
-            aptName: filter.aptName,
-            aptSize: filter.aptSize,
-          },
-        });
-      }
-    })
-
+        let initFilter = [
+          { aptName: "한라", aptSize: 41.85 },
+          { aptName: "한라", aptSize: 51.66 },
+          { aptName: "래미안", aptSize: 59.94 },
+          { aptName: "충무", aptSize: 41.4 },
+          { aptName: "충무", aptSize: 41.85 },
+          { aptName: "충무", aptSize: 42.75 },
+          { aptName: "충무", aptSize: 44.06 },
+          { aptName: "세종", aptSize: 58.46 },
+          { aptName: "세종", aptSize: 58.71 },
+          { aptName: "우륵", aptSize: 58.46 },
+          { aptName: "우륵", aptSize: 58.71 },
+        ];
+        const filterSaved = localStorage.getItem("aptInfoFilter");
+        if (filterSaved && JSON.parse(filterSaved).length) {
+          initFilter = JSON.parse(filterSaved);
+        }
+        for (const filter of initFilter) {
+          dispatch({
+            type: "REGIST_FILTER",
+            filter: {
+              aptName: filter.aptName,
+              aptSize: filter.aptSize,
+            },
+          });
+        }
+      });
   }, [searchRangeList]);
 
   const handleChange = (event) => {
     openApi.getAllAptInfo({ calcMonth: event.target.value }).then((data) => {
       setAllAptInfo(data);
-      setYulgokAptInfo(openApi.getFilterAptInfo({ items: data, filterAptName: "율곡" }));
-      setNearAptPriceInfo(openApi.getFilterAptInfo({ items: data }).newestDealApts);
-    })
-  }
+      setYulgokAptInfo(
+        openApi.getFilterAptInfo({ items: data, filterAptName: "율곡" })
+      );
+      setNearAptPriceInfo(
+        openApi.getFilterAptInfo({ items: data }).newestDealApts
+      );
+    });
+  };
 
   const { filters } = state;
 
@@ -103,16 +128,32 @@ const App = ({ openApi }) => {
         aptName: filter.aptName,
         aptSize: filter.aptSize,
       },
-    })
-  })
+    });
+  });
+
+  const onFilterSave = () => {
+    localStorage.setItem("aptInfoFilter", JSON.stringify(filters));
+  };
+
+  const onFilterReset = () => {
+    localStorage.removeItem("aptInfoFilter");
+  };
 
   useMemo(() => {
     const result = [];
     for (const filter of filters) {
-      result.push(...openApi.getFilterAptInfo({ items: allAptInfo, filterAptName: filter.aptName, filterAptSize: filter.aptSize }).newestDealApts);
+      result.push(
+        ...openApi.getFilterAptInfo({
+          items: allAptInfo,
+          filterAptName: filter.aptName,
+          filterAptSize: filter.aptSize,
+        }).newestDealApts
+      );
     }
-    if (filters.length == 0 && allAptInfo.length > 0) {
-      result.push(...openApi.getFilterAptInfo({ items: allAptInfo }).newestDealApts);
+    if (filters.length === 0 && allAptInfo.length > 0) {
+      result.push(
+        ...openApi.getFilterAptInfo({ items: allAptInfo }).newestDealApts
+      );
     }
     setNearAptPriceInfo(result);
   }, [filters]);
@@ -127,9 +168,14 @@ const App = ({ openApi }) => {
         onChange={onChange}
         onFilterRegist={onFilterRegist}
         onFilterDelete={onFilterDelete}
-        filters={filters} />
+        filters={filters}
+        onFilterSave={onFilterSave}
+        onFilterReset={onFilterReset}
+      />
       <AptInfo aptInfo={yulgokAptInfo} nearAptPriceInfo={nearAptPriceInfo} />
-    </>);
+      <Footer />
+    </>
+  );
 };
 
 export default App;

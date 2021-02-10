@@ -2,10 +2,54 @@
   box-sizing: border-box;
 }
 
+.display-none {
+  display: none;
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 0.3em;
+}
+
+table {
+  width: 100%;
+}
+
+table thead th,
+table thead td {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.filter-control-box {
+  margin: 0.5em;
+  display: flex;
+  justify-content: center;
+}
+
 button {
   outline: none;
   border: 0;
   cursor: pointer;
+}
+
+.filter-area {
+  margin-top: 0.3em;
+}
+
+article {
+  margin-bottom: 1em;
 }
 
 .navbar {
@@ -74,6 +118,15 @@ button {
   background-color: transparent;
 }
 
+.save {
+  background-color: #f56e00;
+  margin-right: 0.5em;
+}
+
+.reset {
+  background-color: #bdfa4d;
+}
+
 .habit-button:hover {
   opacity: 0.8;
 }
@@ -84,7 +137,7 @@ button {
 }
 
 .habit-delete {
-  color: darkred;
+  color: red;
 }
 
 .habits-reset {
@@ -95,5 +148,49 @@ button {
 }
 
 table td {
-  text-align: right;
+  /* text-align: right; */
+}
+
+.tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.tg td {
+  border-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+.tg th {
+  border-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+.tg tbody tr:nth-child(even) {
+  background-color: #dae8fc;
+  border-color: #ffffff;
+  text-align: left;
+  vertical-align: top;
+}
+.tg thead tr {
+  background-color: #c0c0c0;
+  border-color: #ffffff;
+  text-align: left;
+  vertical-align: top;
+}
+.tg tbody tr:nth-child(odd) {
+  background-color: #c9ff65;
+  border-color: #ffffff;
+  text-align: left;
+  vertical-align: top;
 }
