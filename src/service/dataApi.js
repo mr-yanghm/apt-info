@@ -224,7 +224,7 @@ const OpenAPI_APT = function () {
   this.search = async function (yyyymm) {
     // console.log(`call yyyymm : ${yyyymm}`);
     const response = await axios.get(
-      `/api/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=8QZG3WqYe5WrxepvfzKZUeeWFuWsKfv%2BKKsnn%2FdpgPhqeLdF0LV6%2BiIZXT7HEieOBoTupfitXJ6dX5j4amsN0g%3D%3D&pageNo=1&numOfRows=10000&LAWD_CD=41410&DEAL_YMD=${yyyymm}`
+      `/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=8QZG3WqYe5WrxepvfzKZUeeWFuWsKfv%2BKKsnn%2FdpgPhqeLdF0LV6%2BiIZXT7HEieOBoTupfitXJ6dX5j4amsN0g%3D%3D&pageNo=1&numOfRows=10000&LAWD_CD=41410&DEAL_YMD=${yyyymm}`
     );
 
     // const result = convert.xml2json(resultXml, {});
