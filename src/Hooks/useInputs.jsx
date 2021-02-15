@@ -7,6 +7,11 @@ function reducer(state, action) {
         ...state,
         [action.name]: action.value
       };
+    case 'SET':
+      return {
+        ...state,
+        [action.name]: action.value
+      };
     case 'RESET':
       return Object.keys(state).reduce((acc, current) => {
         acc[current] = '';
@@ -25,6 +30,10 @@ const useInputs = (initialForm) => {
     dispatch({ type: "CHANGE", name, value });
   }, []);
 
+  const onSet = useCallback(({ name, value }) => {
+    dispatch({ type: "CHANGE", name, value });
+  }, []);
+
   // 방법 1
   // const reset = useCallback(() => dispatch({ type: "RESET", form: initialForm }, [initialForm]));
 
@@ -32,7 +41,7 @@ const useInputs = (initialForm) => {
   const reset = useCallback(() => dispatch({ type: "RESET" }, []));
 
   // setForm(initialForm), [initialForm]);
-  return [form, onChange, reset];
+  return [form, onChange, onSet, reset];
 };
 
 export default useInputs;

@@ -116,15 +116,21 @@ article {
   font-size: 1.2rem;
   margin: 0 0.1em;
   background-color: transparent;
+  border-radius: 5%;
+}
+
+.regist {
+  background-color: #0b88fd;
+  margin-right: 0.5em;
 }
 
 .save {
-  background-color: #f56e00;
+  background-color: #99ceff;
   margin-right: 0.5em;
 }
 
 .reset {
-  background-color: #bdfa4d;
+  background-color: #ffa791;
 }
 
 .habit-button:hover {
@@ -189,8 +195,24 @@ table td {
   vertical-align: top;
 }
 .tg tbody tr:nth-child(odd) {
-  background-color: #c9ff65;
+  background-color: beige;
   border-color: #ffffff;
   text-align: left;
   vertical-align: top;
+}
+
+#searchBox select {
+  width: 100%;
+}
+
+p {
+  font-size: 0.8em;
+}
+
+ul {
+  padding-left: 2em;
+}
+
+select {
+  height: 2em;
 }

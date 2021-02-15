@@ -70,6 +70,65 @@ const OpenAPI_APT = function () {
   };
 
   /**
+   * 전체 목록 중에서 AptName 을 중복제거 후 오름차순 정렬하여 반환
+   * @param {*} items : array
+   */
+  this.getAptNameList = function ({ items }) {
+    const filterItems = items
+      .map((item) => {
+        return item.아파트;
+      })
+      .sort(function (a, b) {
+        // 거래금액 내림차순으로 정렬 해서 가장 큰 금액 반환
+        var aValue = a;
+        var bValue = b;
+        if (aValue > bValue) {
+          return 1;
+        }
+        if (aValue < bValue) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+    return [...new Set(filterItems)];
+  };
+
+  this.getAptSizeList = function ({ items, names }) {
+    const resultObj = {};
+
+    for (const aptName of names) {
+      //   console.log(name);
+      const filterItems = items
+        // .map((item) => {
+        //   return item.아파트;
+        // })
+        .filter((item) => {
+          return item.아파트 === aptName;
+        })
+        .map((item) => {
+          return item.전용면적;
+        })
+        .sort(function (a, b) {
+          // 거래금액 내림차순으로 정렬 해서 가장 큰 금액 반환
+          var aValue = a;
+          var bValue = b;
+          if (aValue > bValue) {
+            return 1;
+          }
+          if (aValue < bValue) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+      resultObj[aptName] = [...new Set(filterItems)];
+    }
+    // console.log(resultObj);
+    return resultObj;
+  };
+
+  /**
    * 계산하여야 할 calcMonth 를 파라미터로 받아 현재 달을 기준으로 1달전, 2달전, 3달전 등의 누적 데이타중 평형별 최고값을 반환한다.
    * @param {*} calcMonth
    */
@@ -224,7 +283,7 @@ const OpenAPI_APT = function () {
   this.search = async function (yyyymm) {
     // console.log(`call yyyymm : ${yyyymm}`);
     const response = await axios.get(
-      `/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=8QZG3WqYe5WrxepvfzKZUeeWFuWsKfv%2BKKsnn%2FdpgPhqeLdF0LV6%2BiIZXT7HEieOBoTupfitXJ6dX5j4amsN0g%3D%3D&pageNo=1&numOfRows=10000&LAWD_CD=41410&DEAL_YMD=${yyyymm}`
+      `http://www.cuvnd.com:3001/api?yyyymm=${yyyymm}`
     );
 
     // const result = convert.xml2json(resultXml, {});
@@ -232,7 +291,7 @@ const OpenAPI_APT = function () {
     //   ...item,
     //   id: item.id.videoId,
     // }));
-    return response.data.response.body.items.item.map((data) => {
+    return await response.data.items.item.map((data) => {
       return {
         ...data,
         거래금액: Number(data.거래금액.trim().replace(",", "")),

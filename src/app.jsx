@@ -48,8 +48,11 @@ const App = ({ openApi }) => {
   const [yulgokAptInfo, setYulgokAptInfo] = useState({});
   const [state, dispatch] = useReducer(reducer, initialState);
   const [nearAptPriceInfo, setNearAptPriceInfo] = useState([]);
+  const [aptNameList, setAptNameList] = useState([]);
+  const [aptSizeObj, setAptSizeObj] = useState({});
+  const [selectedSizeList, setSelectedSizeList] = useState([]);
 
-  const [{ aptName, aptSize }, onChange, reset] = useInputs({
+  const [{ aptName, aptSize }, onChange, onSet, reset] = useInputs({
     aptName: "",
     aptSize: "",
   });
@@ -65,6 +68,13 @@ const App = ({ openApi }) => {
         setNearAptPriceInfo(
           openApi.getFilterAptInfo({ items: data }).newestDealApts
         );
+        const aptNameList = openApi.getAptNameList({ items: data });
+        setAptNameList(aptNameList);
+        const aptSizeList = openApi.getAptSizeList({ items: data, names: aptNameList });
+
+        setAptSizeObj(aptSizeList);
+        // setSelectedSizeList(aptSizeList[aptNameList[0]]);
+
         // console.log(openApi.getFilterAptInfo({ items: data }));
 
         let initFilter = [
@@ -83,6 +93,7 @@ const App = ({ openApi }) => {
         const filterSaved = localStorage.getItem("aptInfoFilter");
         if (filterSaved && JSON.parse(filterSaved).length) {
           initFilter = JSON.parse(filterSaved);
+          document.querySelector('.filter-addon').style.display = 'block';
         }
         for (const filter of initFilter) {
           dispatch({
@@ -95,6 +106,12 @@ const App = ({ openApi }) => {
         }
       });
   }, [searchRangeList]);
+
+
+  useEffect(() => {
+    setSelectedSizeList(aptSizeObj[aptName]);
+    aptSizeObj[aptName] && onSet({ name: 'aptSize', value: aptSizeObj[aptName][0] });
+  }, [aptName]);
 
   const handleChange = (event) => {
     openApi.getAllAptInfo({ calcMonth: event.target.value }).then((data) => {
@@ -111,6 +128,8 @@ const App = ({ openApi }) => {
   const { filters } = state;
 
   const onFilterRegist = useCallback(() => {
+    if (!aptName) return alert('필터등록은 아파트명이 필수입니다.');
+
     dispatch({
       type: "REGIST_FILTER",
       filter: {
@@ -118,6 +137,7 @@ const App = ({ openApi }) => {
         aptSize: aptSize,
       },
     });
+    document.querySelector('.filter-addon').style.display = 'block';
   });
 
   const onFilterDelete = useCallback((filter) => {
@@ -129,14 +149,19 @@ const App = ({ openApi }) => {
         aptSize: filter.aptSize,
       },
     });
+    document.querySelector('.filter-addon').style.display = 'block';
   });
 
   const onFilterSave = () => {
-    localStorage.setItem("aptInfoFilter", JSON.stringify(filters));
+    if (window.confirm('이 기능은 새로고침해도 현재 필터를 유지하는 기능입니다. 필터를 저장하시겠습니까?')) {
+      localStorage.setItem("aptInfoFilter", JSON.stringify(filters));
+    }
   };
 
   const onFilterReset = () => {
     localStorage.removeItem("aptInfoFilter");
+    alert('로컬에 저장된 필터가 초기화 되었습니다.');
+    document.location.reload();
   };
 
   useMemo(() => {
@@ -156,6 +181,7 @@ const App = ({ openApi }) => {
       );
     }
     setNearAptPriceInfo(result);
+
   }, [filters]);
 
   return (
@@ -171,6 +197,8 @@ const App = ({ openApi }) => {
         filters={filters}
         onFilterSave={onFilterSave}
         onFilterReset={onFilterReset}
+        aptNameList={aptNameList}
+        selectedSizeList={selectedSizeList}
       />
       <AptInfo aptInfo={yulgokAptInfo} nearAptPriceInfo={nearAptPriceInfo} />
       <Footer />
