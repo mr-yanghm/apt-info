@@ -23,7 +23,7 @@ const FilterBox = ({ filters, onFilterDelete }) => {
       <table className="tg">
         <thead>
           <tr>
-            <th>아파트명</th>
+            <th>아파트명({filters.length})</th>
             <th colSpan="2">전용면적</th>
           </tr>
         </thead>

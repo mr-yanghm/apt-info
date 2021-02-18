@@ -201,7 +201,7 @@ table td {
   vertical-align: top;
 }
 
-#searchBox select {
+select {
   width: 100%;
 }
 
@@ -215,4 +215,17 @@ ul {
 
 select {
   height: 2em;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.width25 {
+  width: 25%;
+}
+
+.searchBox label {
+  margin-bottom: 6px;
+  display: block;
 }

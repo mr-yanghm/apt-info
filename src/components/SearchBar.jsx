@@ -2,8 +2,8 @@ import React from "react";
 import FilterBox from "./FilterBox";
 
 const SearchBar = ({
-  searchRangeList,
-  handleChange,
+  inquiryPeriodList,
+  onSearchRangeChange,
   onChange,
   onFilterRegist,
   filters,
@@ -14,19 +14,20 @@ const SearchBar = ({
   selectedSizeList
 }) => {
   return (
-    <article id="searchBox">
-      <div className="display-none">
-        <span>현재월을 제외한 최근 </span>
-        <select name="searchRange" id="searchRange" onChange={handleChange}>
-          {searchRangeList.map((value, index) => (
-            <option key={index} value={value}>
-              {value}
-            </option>
-          ))}
-        </select>
-        <select name="searchValue" id="searchValue">
-          <option value="month">개월</option>
-        </select>
+    <article className="searchBox">
+      <div className="">
+        <label htmlFor="inquiryPeriod">조회기간 : (현재월을 제외한 최근)</label>
+        <div className="display-flex">
+          <span></span>
+          <select name="inquiryPeriod" id="inquiryPeriod" onChange={onChange} className="width25">
+            {inquiryPeriodList.map((value, index) => (
+              <option key={index} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+          <span>개월</span>
+        </div>
       </div>
       <div>
         <h1>인근아파트 시세 필터</h1>

@@ -12,7 +12,7 @@ import SearchBar from "./components/SearchBar";
 import useInputs from "./Hooks/useInputs";
 
 const initialState = {
-  searchRangeList: [1],
+  inquiryPeriodList: [1, 3, 6, 12],
   selectedRangeIndex: 0,
   filters: [],
 };
@@ -32,17 +32,18 @@ function reducer(state, action) {
           (filter) => filter.id !== action.filter.id
         ),
       };
+    case "RESET_FILTER":
+      return {
+        ...action.initialState
+      };
     default:
       return state;
   }
 }
 
 const App = ({ openApi }) => {
-  const [searchRangeList, setSearchRangeList] = useState(
-    initialState.searchRangeList
-  );
-  const [selectedRangeIndex, setSelectedRangeIndex] = useState(
-    initialState.selectedRangeIndex
+  const [inquiryPeriodList, setInquiryPeriodList] = useState(
+    initialState.inquiryPeriodList
   );
   const [allAptInfo, setAllAptInfo] = useState([]);
   const [yulgokAptInfo, setYulgokAptInfo] = useState({});
@@ -52,19 +53,30 @@ const App = ({ openApi }) => {
   const [aptSizeObj, setAptSizeObj] = useState({});
   const [selectedSizeList, setSelectedSizeList] = useState([]);
 
-  const [{ aptName, aptSize }, onChange, onSet, reset] = useInputs({
+  const [{ aptName, aptSize, inquiryPeriod }, onChange, onSet, reset] = useInputs({
     aptName: "",
     aptSize: "",
+    inquiryPeriod: "1",
   });
 
   useEffect(() => {
+  }, []);
+
+  useEffect(() => {
+    setSelectedSizeList(aptSizeObj[aptName]);
+    aptSizeObj[aptName] && onSet({ name: 'aptSize', value: aptSizeObj[aptName][0] });
+  }, [aptName]);
+
+  useEffect(() => {
     openApi
-      .getAllAptInfo({ calcMonth: searchRangeList[selectedRangeIndex] })
+      .getAllAptInfo({ calcMonth: inquiryPeriod })
       .then((data) => {
+        console.log(`data : ${data.length}`);
         setAllAptInfo(data);
         setYulgokAptInfo(
           openApi.getFilterAptInfo({ items: data, filterAptName: "율곡" })
         );
+        console.log(openApi.getFilterAptInfo({ items: data }).newestDealApts);
         setNearAptPriceInfo(
           openApi.getFilterAptInfo({ items: data }).newestDealApts
         );
@@ -73,9 +85,11 @@ const App = ({ openApi }) => {
         const aptSizeList = openApi.getAptSizeList({ items: data, names: aptNameList });
 
         setAptSizeObj(aptSizeList);
-        // setSelectedSizeList(aptSizeList[aptNameList[0]]);
 
-        // console.log(openApi.getFilterAptInfo({ items: data }));
+        dispatch({
+          type: "RESET_FILTER",
+          initialState,
+        })
 
         let initFilter = [
           { aptName: "한라", aptSize: 41.85 },
@@ -105,15 +119,9 @@ const App = ({ openApi }) => {
           });
         }
       });
-  }, [searchRangeList]);
+  }, [inquiryPeriod]);
 
-
-  useEffect(() => {
-    setSelectedSizeList(aptSizeObj[aptName]);
-    aptSizeObj[aptName] && onSet({ name: 'aptSize', value: aptSizeObj[aptName][0] });
-  }, [aptName]);
-
-  const handleChange = (event) => {
+  const onSearchRangeChange = (event) => {
     openApi.getAllAptInfo({ calcMonth: event.target.value }).then((data) => {
       setAllAptInfo(data);
       setYulgokAptInfo(
@@ -187,8 +195,8 @@ const App = ({ openApi }) => {
   return (
     <>
       <SearchBar
-        handleChange={handleChange}
-        searchRangeList={searchRangeList}
+        // onSearchRangeChange={onSearchRangeChange}
+        inquiryPeriodList={inquiryPeriodList}
         aptName={aptName}
         aptSize={aptSize}
         onChange={onChange}
