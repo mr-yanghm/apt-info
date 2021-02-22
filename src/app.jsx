@@ -120,9 +120,12 @@ const App = ({ openApi }) => {
     //   initialState,
     // })
 
+    console.log(filters);
+    let initFilter = [...filters];
+
     if (!filters.length) {
 
-      let initFilter = [
+      initFilter = [
         { aptName: "한라", aptSize: 41.85 },
         { aptName: "한라", aptSize: 51.66 },
         { aptName: "래미안", aptSize: 59.94 },
@@ -141,10 +144,6 @@ const App = ({ openApi }) => {
         document.querySelector('.filter-addon').style.display = 'block';
       }
       // console.log(initFilter);
-      dispatch({
-        type: "REGIST_FILTERS",
-        filters: initFilter,
-      });
       // for (const filter of initFilter) {
       //   dispatch({
       //     type: "REGIST_FILTER",
@@ -155,10 +154,14 @@ const App = ({ openApi }) => {
       //   });
       // }
     }
+    dispatch({
+      type: "REGIST_FILTERS",
+      filters: initFilter,
+    });
 
   }, [allAptInfo])
 
-  const setData = useMemo(() => {
+  useMemo(() => {
     const result = [];
     for (const filter of filters) {
       result.push(

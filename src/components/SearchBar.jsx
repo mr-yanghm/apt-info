@@ -32,7 +32,7 @@ const SearchBar = ({
       <div>
         <h1>인근아파트 시세 필터</h1>
         <div>
-          <label htmlFor="aptName">아파트명 : </label>
+          <label htmlFor="aptName">아파트명 : ({aptNameList && aptNameList.length})</label>
           {/* <input type="text" name="aptName" id="aptName" onChange={onChange} /> */}
           <select name="aptName" id="aptName" onChange={onChange}>
             <option value="">선택하세요</option>
@@ -43,7 +43,7 @@ const SearchBar = ({
             }
           </select>
           <br />
-          <label htmlFor="aptSize">전용면적 : </label>
+          <label htmlFor="aptSize">전용면적 : ({selectedSizeList && selectedSizeList.length})</label>
           {/* <input type="text" name="aptSize" id="aptSize" onChange={onChange} /> */}
           <select name="aptSize" id="aptSize" onChange={onChange}>
             {
