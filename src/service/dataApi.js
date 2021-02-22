@@ -300,4 +300,7 @@ const OpenAPI_APT = function () {
   };
 };
 
+// enCar 원하는 차량 조회
+// http://api.encar.com/search/car/list/premium?count=true&q=(And.Hidden.N._.(C.CarType.N._.(C.Manufacturer.BMW._.(C.ModelGroup.5%EC%8B%9C%EB%A6%AC%EC%A6%88._.(C.Model.5%EC%8B%9C%EB%A6%AC%EC%A6%88+(F10_)._.(C.BadgeGroup.%EB%94%94%EC%A0%A4+4WD._.Badge.M550d+xDrive.))))))&sr=%7CModifiedDate%7C0%7C20
+
 export default OpenAPI_APT;

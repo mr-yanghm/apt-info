@@ -97,7 +97,7 @@ const App = ({ openApi }) => {
       });
   }, [inquiryPeriod]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (!allAptInfo.length) {
       return;
     }
