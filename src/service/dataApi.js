@@ -283,7 +283,7 @@ const OpenAPI_APT = function () {
   this.search = async function (yyyymm) {
     // console.log(`call yyyymm : ${yyyymm}`);
     const response = await axios.get(
-      `http://www.cuvnd.com:3001/api?yyyymm=${yyyymm}`
+      `http://apt.cuvnd.com:3001/api?yyyymm=${yyyymm}`
     );
 
     // const result = convert.xml2json(resultXml, {});
