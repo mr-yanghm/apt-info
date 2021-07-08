@@ -291,12 +291,16 @@ const OpenAPI_APT = function () {
     //   ...item,
     //   id: item.id.videoId,
     // }));
-    return await response.data.items.map((data) => {
-      return {
-        ...data,
-        거래금액: Number(data.거래금액.trim().replace(",", "")),
-      };
-    });
+    if(response.data.items.item.length === undefined){
+      return [{...response.data.items.item, 거래금액: Number(response.data.items.item.거래금액.trim().replace(",", ""))}];
+    }else{
+      return response.data.items.item.map((data) => {
+        return {
+          ...data,
+          거래금액: Number(data.거래금액.trim().replace(",", "")),
+        };
+      });
+    }
   };
 };
 
