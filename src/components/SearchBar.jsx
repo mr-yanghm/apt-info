@@ -11,10 +11,11 @@ const SearchBar = ({
   onFilterSave,
   onFilterReset,
   aptNameList,
-  selectedSizeList
+  selectedSizeList,
+  isVisibleSearchbox
 }) => {
   return (
-    <article className="searchBox">
+    <article className="searchBox" className={isVisibleSearchbox ? "" : "inVisible"}>
       <div className="">
         <label htmlFor="inquiryPeriod">조회기간 : (현재월을 제외한 최근)</label>
         <div className="display-flex">
@@ -46,6 +47,7 @@ const SearchBar = ({
           <label htmlFor="aptSize">전용면적 : ({selectedSizeList && selectedSizeList.length})</label>
           {/* <input type="text" name="aptSize" id="aptSize" onChange={onChange} /> */}
           <select name="aptSize" id="aptSize" onChange={onChange}>
+            <option value="">선택하세요</option>
             {
               selectedSizeList && selectedSizeList.map((name, index) => {
                 return <option key={index} value={name}>{name}</option>
@@ -56,7 +58,7 @@ const SearchBar = ({
         <div className="filter-control-box">
           <button onClick={onFilterRegist} className="habit-button regist">필터 등록</button>
         </div>
-        <FilterBox filters={filters} onFilterDelete={onFilterDelete} />
+        {/* <FilterBox filters={filters} onFilterDelete={onFilterDelete} /> */}
         <p>
           ※ 모든 필터를 삭제할 시 인근아파트 최근 시세에 전체 아파트 정보가 나옵니다.
         </p>

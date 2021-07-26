@@ -21,11 +21,14 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "REGIST_FILTER":
-      return {
+      const sameFilter = state.filters.filter((data) => {
+        return data.aptSize === action.filter.aptSize && data.aptName === action.filter.aptName;
+      });
+      return sameFilter.length === 0 ? {
         // inputs: initialState.inputs,
         ...state, // 위와 같은 표현
         filters: [...state.filters, { ...action.filter, id: new Date() }],
-      };
+      } : {...state};
     case "REGIST_FILTERS":
       return {
         // inputs: initialState.inputs,
@@ -50,6 +53,8 @@ function reducer(state, action) {
 
 const App = ({ openApi }) => {
   let [loadingIndicator, setLoadingIndicator] = useState(true);
+
+  const [isVisibleSearchbox, setIsVisibleSearchbox] = useState(false);
 
   const [inquiryPeriodList, setInquiryPeriodList] = useState(
     initialState.inquiryPeriodList
@@ -126,13 +131,13 @@ const App = ({ openApi }) => {
     if (!filters.length) {
 
       initFilter = [
-        { aptName: "한라", aptSize: 41.85 },
-        { aptName: "한라", aptSize: 51.66 },
-        { aptName: "래미안", aptSize: 59.94 },
-        { aptName: "충무", aptSize: 41.4 },
-        { aptName: "충무", aptSize: 41.85 },
-        { aptName: "충무", aptSize: 42.75 },
-        { aptName: "충무", aptSize: 44.06 },
+        { aptName: "한라주공4", aptSize: 41.85 },
+        { aptName: "한라주공4", aptSize: 51.66 },
+        { aptName: "래미안 하이어스", aptSize: 59.94 },
+        { aptName: "충무주공(873-2)", aptSize: 41.4 },
+        { aptName: "충무주공(872)", aptSize: 41.85 },
+        { aptName: "충무주공(872)", aptSize: 42.75 },
+        { aptName: "충무주공(872)", aptSize: 44.06 },
         { aptName: "세종", aptSize: 58.46 },
         { aptName: "세종", aptSize: 58.71 },
         { aptName: "우륵", aptSize: 58.46 },
@@ -195,13 +200,24 @@ const App = ({ openApi }) => {
   };
 
   const onFilterRegist = useCallback(() => {
-    if (!aptName) return alert('필터등록은 아파트명이 필수입니다.');
+    if (!aptName){
+      alert('아파트명을 선택하세요.');
+      document.querySelector("#aptName").focus();
+      return ;
+    }
+
+    console.log(`aptSize :: ${aptSize}`)
+    if (!aptSize){
+      alert('전용면적을 선택하세요.');
+      document.querySelector("#aptSize").focus();
+      return ;
+    }
 
     dispatch({
       type: "REGIST_FILTER",
       filter: {
         aptName: aptName,
-        aptSize: aptSize,
+        aptSize: Number(aptSize),
       },
     });
     document.querySelector('.filter-addon').style.display = 'block';
@@ -231,10 +247,30 @@ const App = ({ openApi }) => {
     document.location.reload();
   };
 
+  const onClickAddFilter = () => {
+    setIsVisibleSearchbox(!isVisibleSearchbox);
+    console.log('onClickAddFilter clicked~!');
+  };
+
 
   return (
     <>
-      {loadingIndicator === true ? <div className="modal"><div className="modalContent"><CircularProgress className="spinner" /></div><div className="modalLayer"></div></div> : null}
+      {loadingIndicator === true ? (
+        <div className="modal">
+          <div className="modalContent">
+            <CircularProgress className="spinner" />
+          </div>
+          <div className="modalLayer"></div>
+        </div>
+      ) : null}
+      <AptInfo
+        aptInfo={yulgokAptInfo}
+        nearAptPriceInfo={nearAptPriceInfo}
+        onClickAddFilter={onClickAddFilter}
+        filters={filters || []}
+        onFilterDelete={onFilterDelete}
+        isVisibleSearchbox={isVisibleSearchbox}
+      />
       <SearchBar
         // onSearchRangeChange={onSearchRangeChange}
         inquiryPeriodList={inquiryPeriodList}
@@ -248,8 +284,8 @@ const App = ({ openApi }) => {
         onFilterReset={onFilterReset}
         aptNameList={aptNameList}
         selectedSizeList={selectedSizeList}
+        isVisibleSearchbox={isVisibleSearchbox}
       />
-      <AptInfo aptInfo={yulgokAptInfo} nearAptPriceInfo={nearAptPriceInfo} />
       <Footer />
     </>
   );

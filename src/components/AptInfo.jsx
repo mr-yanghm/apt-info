@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export function to_date_format(date_str) {
     const gubun = "-";
@@ -13,7 +13,21 @@ export function to_date_format(date_str) {
 const AptInfo = ({
     aptInfo: { highestPriceApts, newestDealApts },
     nearAptPriceInfo,
+    onClickAddFilter,
+    filters,
+    onFilterDelete,
+    isVisibleSearchbox
 }) => {
+    const [filter, setFilter] = useState({});
+    const onDelete = (target) => {
+        console.log('onDelete click~!', target);
+        console.log('filters~!', filters);
+        const filter = filters.filter((data) => {
+            return data.aptName === target.아파트 && data.aptSize === target.전용면적;
+        })[0];
+        console.log('onDelete filter~!', filter);
+        filter && onFilterDelete(filter);
+    };
     // console.log(nearAptPriceInfo);
     // console.log();
 
@@ -44,7 +58,8 @@ const AptInfo = ({
                                     );
                                 return (
                                     <tr key={index}>
-                                        <th className="right">{newestDealApt.전용면적}</th>
+                                        <th className="right">{newestDealApt.전용면적}
+                                        </th>
                                         <td className="right">
                                             {Number(newestDealApt.거래금액).toLocaleString("ko-KR")}
                                         </td>
@@ -82,7 +97,8 @@ const AptInfo = ({
                             nearAptPriceInfo.map((apt, index) => {
                                 return (
                                     <tr key={index}>
-                                        <th className="center">{apt.아파트}</th>
+                                        <th className="center">{apt.아파트}
+                                        </th>
                                         <td className="right">{apt.전용면적}</td>
                                         <td className="right">
                                             {Number(apt.거래금액).toLocaleString("ko-KR")}
@@ -90,12 +106,19 @@ const AptInfo = ({
                                         <td className="right">
                                             {Number(apt.최고가).toLocaleString("ko-KR")}
                                         </td>
-                                        <td className="center">{to_date_format(apt.거래년월)}</td>
+                                        <td className="center">{to_date_format(apt.거래년월)}
+                                            <button className="habit-button habit-delete" onClick={onDelete.bind(this, apt)}>
+                                                <i className="fas fa-minus-square"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 );
                             })}
                     </tbody>
                 </table>
+                <div className="addFilter">
+                    <button type="button" id="addFilter" onClick={onClickAddFilter}>{isVisibleSearchbox ? "필터 숨기기" : "필터 보이기"}</button>
+                </div>
             </article>
         </>
     );
