@@ -1,0 +1,222 @@
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background: linear-gradient(45deg, #49a09d, #5f2c82);
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+.container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+table {
+	width: 800px;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th,
+td {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.2);
+	color: #fff;
+}
+
+th {
+	text-align: left;
+}
+
+thead th {
+		background-color: #55608f;
+}
+
+tbody tr{
+			background-color: rgba(255,255,255,0.3);
+}
+tbody td {
+		position: relative;
+}
+
+tbody td:hover ::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  background-color: rgba(255,255,255,0.2);
+  z-index: -1;
+}
+
+.display-none {
+  display: none;
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 0.3em;
+}
+
+table {
+  width: 100%;
+}
+
+table thead th,
+table thead td {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.filter-control-box {
+  margin: 0.5em;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.filter-area {
+  margin-top: 0.3em;
+}
+
+article {
+  margin-bottom: 1em;
+}
+
+.navbar {
+  font-size: 2rem;
+  padding: 1em;
+  background: blanchedalmond;
+}
+
+.navbar-logo {
+  color: green;
+  margin-right: 0.5em;
+}
+
+.navbar-count {
+  display: inline-block;
+  text-align: center;
+  font-size: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  margin-left: 0.2em;
+  background-color: green;
+  color: white;
+  border-radius: 50%;
+}
+
+.add-input {
+  font-size: 2rem;
+}
+
+.add-input {
+  margin-right: 0.2em;
+}
+
+.add-button {
+  height: 100%;
+  font-size: 1.5rem;
+  padding: 0.3em 0.5em;
+  background-color: green;
+  color: white;
+}
+
+.regist {
+  background-color: #0b88fd;
+  margin-right: 0.5em;
+}
+
+.save {
+  background-color: #99ceff;
+  margin-right: 0.5em;
+}
+
+.reset {
+  background-color: #ffa791;
+}
+
+
+select {
+  width: 100%;
+}
+
+p {
+  font-size: 0.8em;
+}
+
+ul {
+  padding-left: 2em;
+}
+
+select {
+  height: 2em;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.width25 {
+  width: 25%;
+}
+
+.searchBox label {
+  margin-bottom: 6px;
+  display: block;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.modalContent {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.inVisible {
+  display: none;
+}
