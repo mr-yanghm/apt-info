@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/apt-info/static/css/main.1f4afa27.chunk.css",
+    "main.js": "/apt-info/static/js/main.d58c6de8.chunk.js",
+    "main.js.map": "/apt-info/static/js/main.d58c6de8.chunk.js.map",
+    "runtime-main.js": "/apt-info/static/js/runtime-main.0b3c9547.js",
+    "runtime-main.js.map": "/apt-info/static/js/runtime-main.0b3c9547.js.map",
+    "static/js/2.e2b8af60.chunk.js": "/apt-info/static/js/2.e2b8af60.chunk.js",
+    "static/js/2.e2b8af60.chunk.js.map": "/apt-info/static/js/2.e2b8af60.chunk.js.map",
+    "index.html": "/apt-info/index.html",
+    "static/css/main.1f4afa27.chunk.css.map": "/apt-info/static/css/main.1f4afa27.chunk.css.map",
+    "static/js/2.e2b8af60.chunk.js.LICENSE.txt": "/apt-info/static/js/2.e2b8af60.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0b3c9547.js",
+    "static/js/2.e2b8af60.chunk.js",
+    "static/css/main.1f4afa27.chunk.css",
+    "static/js/main.d58c6de8.chunk.js"
+  ]
+}
