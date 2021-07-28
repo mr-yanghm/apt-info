@@ -18,6 +18,7 @@ const initialState = {
   filters: [],
 };
 
+
 function reducer(state, action) {
   switch (action.type) {
     case "REGIST_FILTER":
