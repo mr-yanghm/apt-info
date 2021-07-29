@@ -1,7 +1,8 @@
 {
-  "name": "template",
+  "name": "apt-info",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://mr-yanghm.github.io",
+  "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -46,6 +47,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "homepage": "https://mr-yanghm.github.io/apt-info"
+  }
 }
