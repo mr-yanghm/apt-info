@@ -1,7 +1,7 @@
 {
   "name": "apt-info",
   "version": "0.1.0",
-  "homepage": "https://mr-yanghm.github.io/apt-info",
+  "homepage": "http://mr-yanghm.github.io/apt-info",
   "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "yarn run build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
