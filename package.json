@@ -1,7 +1,7 @@
 {
   "name": "apt-info",
   "version": "0.1.0",
-  "homepage": "./",
+  "homepage": "http://mr-yanghm.github.io/apt-info",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
