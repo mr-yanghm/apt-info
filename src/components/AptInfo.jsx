@@ -36,7 +36,7 @@ const AptInfo = ({
     return (
         <>
             <article>
-                <h1>율곡아파트 최근 시세</h1>
+                <h1>우리아파트 최근 시세</h1>
                 <table className="tg">
                     <thead>
                         <tr>
