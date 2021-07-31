@@ -17,6 +17,7 @@ app.use("/api", (req, res) => {
         params: { DEAL_YMD: yyyymm },
         headers: {
           "Access-Control-Allow-Origin": "*",
+          // "Content-Security-Policy":"upgrade-insecure-requests"
         },
       }
     )
