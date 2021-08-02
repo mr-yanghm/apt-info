@@ -283,7 +283,7 @@ const OpenAPI_APT = function () {
   this.search = async function (yyyymm) {
     // console.log(`call yyyymm : ${yyyymm}`);
     const response = await axios.get(
-      `http://apt-info.cuvnd.com:3001/api?yyyymm=${yyyymm}`
+      `https://apt-info.cuvnd.com/api?yyyymm=${yyyymm}`
     );
 
     // const result = convert.xml2json(resultXml, {});
@@ -291,7 +291,9 @@ const OpenAPI_APT = function () {
     //   ...item,
     //   id: item.id.videoId,
     // }));
-    if(response.data.items.item.length === undefined){
+    if(response.data.items.item === undefined){
+      return [];
+    }else if(response.data.items.item.length === undefined){
       return [{...response.data.items.item, 거래금액: Number(response.data.items.item.거래금액.trim().replace(",", ""))}];
     }else{
       return response.data.items.item.map((data) => {

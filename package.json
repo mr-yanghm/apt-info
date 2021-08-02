@@ -1,7 +1,7 @@
 {
   "name": "apt-info",
   "version": "0.1.0",
-  "homepage": "http://apt.cuvnd.com",
+  "homepage": "https://apt.cuvnd.com",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
@@ -28,7 +28,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "clean": "gh-pages-clean"
   },
   "eslintConfig": {
     "extends": [
