@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.5f4003d9.chunk.css",
-    "main.js": "/static/js/main.b0bc94f7.chunk.js",
-    "main.js.map": "/static/js/main.b0bc94f7.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.bac8fcb9.js",
-    "runtime-main.js.map": "/static/js/runtime-main.bac8fcb9.js.map",
-    "static/js/2.3aaef26c.chunk.js": "/static/js/2.3aaef26c.chunk.js",
-    "static/js/2.3aaef26c.chunk.js.map": "/static/js/2.3aaef26c.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.5f4003d9.chunk.css.map": "/static/css/main.5f4003d9.chunk.css.map",
-    "static/js/2.3aaef26c.chunk.js.LICENSE.txt": "/static/js/2.3aaef26c.chunk.js.LICENSE.txt"
+    "main.css": "/apt-info/static/css/main.5f4003d9.chunk.css",
+    "main.js": "/apt-info/static/js/main.b0bc94f7.chunk.js",
+    "main.js.map": "/apt-info/static/js/main.b0bc94f7.chunk.js.map",
+    "runtime-main.js": "/apt-info/static/js/runtime-main.ce0fa650.js",
+    "runtime-main.js.map": "/apt-info/static/js/runtime-main.ce0fa650.js.map",
+    "static/js/2.3aaef26c.chunk.js": "/apt-info/static/js/2.3aaef26c.chunk.js",
+    "static/js/2.3aaef26c.chunk.js.map": "/apt-info/static/js/2.3aaef26c.chunk.js.map",
+    "index.html": "/apt-info/index.html",
+    "static/css/main.5f4003d9.chunk.css.map": "/apt-info/static/css/main.5f4003d9.chunk.css.map",
+    "static/js/2.3aaef26c.chunk.js.LICENSE.txt": "/apt-info/static/js/2.3aaef26c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.bac8fcb9.js",
+    "static/js/runtime-main.ce0fa650.js",
     "static/js/2.3aaef26c.chunk.js",
     "static/css/main.5f4003d9.chunk.css",
     "static/js/main.b0bc94f7.chunk.js"
