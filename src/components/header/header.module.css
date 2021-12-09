@@ -1,0 +1,42 @@
+@value makerGreen, makerBlack, makerWhite, makerWheat from '../../common/colors.css';
+
+.header {
+  width: 100%;
+  text-align: center;
+  padding: 0.5em;
+  background-color: makerWheat;
+  position: relative;
+}
+
+.logo {
+  width: 3em;
+}
+
+.title {
+  margin: 0;
+  color: makerWhite;
+}
+
+h1 {
+  font-size: small;
+}
+
+h2{
+  font-size:medium;
+}
+
+h3 {
+  font-size: large;
+}
+.logout {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  padding: 0.8em;
+  border-radius: 15%;
+  background-color: makerBlack;
+  color: makerWhite;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+}

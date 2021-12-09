@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export function to_date_format(date_str) {
     const gubun = "-";
@@ -18,7 +18,6 @@ const AptInfo = ({
     onFilterDelete,
     isVisibleSearchbox
 }) => {
-    const [filter, setFilter] = useState({});
     const onDelete = (target) => {
         console.log('onDelete click~!', target);
         console.log('filters~!', filters);

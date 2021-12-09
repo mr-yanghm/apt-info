@@ -1,13 +1,9 @@
 import React from "react";
-import FilterBox from "./FilterBox";
 
 const SearchBar = ({
   inquiryPeriodList,
-  onSearchRangeChange,
   onChange,
   onFilterRegist,
-  filters,
-  onFilterDelete,
   onFilterSave,
   onFilterReset,
   aptNameList,
@@ -15,7 +11,7 @@ const SearchBar = ({
   isVisibleSearchbox
 }) => {
   return (
-    <article className="searchBox" className={isVisibleSearchbox ? "" : "inVisible"}>
+    <article className={`"searchBox" ${isVisibleSearchbox} ? "" : "inVisible"`}>
       <div className="">
         <label htmlFor="inquiryPeriod">조회기간 : (현재월을 제외한 최근)</label>
         <div className="display-flex">
