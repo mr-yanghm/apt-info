@@ -1,4 +1,6 @@
 import React from "react";
+import { useHistory } from "react-router";
+import styles from './aptInfo.module.css';
 
 export function to_date_format(date_str) {
     const gubun = "-";
@@ -18,6 +20,8 @@ const AptInfo = ({
     onFilterDelete,
     isVisibleSearchbox
 }) => {
+    const history = useHistory();
+
     const onDelete = (target) => {
         console.log('onDelete click~!', target);
         console.log('filters~!', filters);
@@ -27,6 +31,12 @@ const AptInfo = ({
         console.log('onDelete filter~!', filter);
         filter && onFilterDelete(filter);
     };
+
+    const manageAptInfo = () => {
+        history.push({
+          pathname: '/manageApt',
+        });
+    }
     // console.log(nearAptPriceInfo);
     // console.log();
 
@@ -35,7 +45,10 @@ const AptInfo = ({
     return (
         <>
             <article>
-                <h1>우리아파트 최근 시세</h1>
+                <div>
+                    <h1>내 아파트 최근 시세</h1>
+                    <button onClick={manageAptInfo}>설정</button>
+                </div>
                 <table className="tg">
                     <thead>
                         <tr>
@@ -43,7 +56,7 @@ const AptInfo = ({
                             <th>최근거래가</th>
                             <th>최고가</th>
                             <th>층수</th>
-                            <th>최근거래가 거래일</th>
+                            <th>최근 거래일</th>
                         </tr>
                     </thead>
                     <tbody>

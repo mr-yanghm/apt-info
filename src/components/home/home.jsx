@@ -5,8 +5,8 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import "./home.css";
-import AptInfo from "../AptInfo";
+// import "./home.css";
+import AptInfo from "../aptInfo/aptInfo";
 import Footer from "../Footer";
 import SearchBar from "../SearchBar";
 import useInputs from "../../Hooks/useInputs";
@@ -310,7 +310,6 @@ const Home = ({ openApi, authService }) => {
           selectedSizeList={selectedSizeList}
           isVisibleSearchbox={isVisibleSearchbox}
         />
-        <Footer />
       </div>
       <Footer />
     </section>
