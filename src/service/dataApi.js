@@ -14,10 +14,18 @@ const OpenAPI_APT = function () {
     return result.items;
   };
 
+  /**
+   * items 목록에서 filterAptName 또는 filterAptSize 에 해당하는 목록을 반환
+   * @param {*} items
+   * @param {*} filterAptName
+   * @param {*} filterAptSize
+   * @returns
+   */
   this.getFilterAptInfo = function ({
     items,
     filterAptName = "",
     filterAptSize = "",
+    kaptCode = "",
   }) {
     // console.log(
     //   `filterAptName : ${filterAptName}, filterAptSize : ${filterAptSize}`
@@ -25,12 +33,12 @@ const OpenAPI_APT = function () {
     const filterItems = items
       .filter((data) => {
         // return data.아파트 === filterAptName;
-        if (filterAptName && filterAptSize) {
+        if (kaptCode && filterAptSize) {
           return (
             data.아파트.indexOf(filterAptName) > -1 &&
             data.전용면적 === Number(filterAptSize)
           );
-        } else if (filterAptName) {
+        } else if (kaptCode) {
           return data.아파트.indexOf(filterAptName) > -1;
         } else if (filterAptSize) {
           return data.전용면적 === Number(filterAptSize);
@@ -132,7 +140,7 @@ const OpenAPI_APT = function () {
    * 계산하여야 할 calcMonth 를 파라미터로 받아 현재 달을 기준으로 1달전, 2달전, 3달전 등의 누적 데이타중 평형별 최고값을 반환한다.
    * @param {*} calcMonth
    */
-  this.getAllAptInfo = async function ({ calcMonth = 1 }) {
+  this.getAllAptInfo = async function ({ sigunguCode, calcMonth = 1 }) {
     let now = new Date();
 
     const items = [];
@@ -142,7 +150,7 @@ const OpenAPI_APT = function () {
       const searchYYYYMM =
         String(now.getFullYear()) + String(now.getMonth() + 1).padStart(2, "0");
 
-      await this.search(searchYYYYMM).then((data) => {
+      await this.search(sigunguCode, searchYYYYMM).then((data) => {
         items.push(...data);
       });
     }
@@ -280,10 +288,10 @@ const OpenAPI_APT = function () {
    * yyyymmdd 를 파라미터로 받아 조회한 달의 율곡 아파트 데이타를 반환한다.
    * @param {*} yyyymmdd
    */
-  this.search = async function (yyyymm) {
+  this.search = async function (sigunguCode, yyyymm) {
     // console.log(`call yyyymm : ${yyyymm}`);
     const response = await axios.get(
-      `https://apt-info.cuvnd.com/api?yyyymm=${yyyymm}`
+      `https://apt-info.cuvnd.com/api?yyyymm=${yyyymm}&sigunguCode=${sigunguCode}`
     );
 
     // const result = convert.xml2json(resultXml, {});
@@ -291,11 +299,18 @@ const OpenAPI_APT = function () {
     //   ...item,
     //   id: item.id.videoId,
     // }));
-    if(response.data.items.item === undefined){
+    if (response.data.items.item === undefined) {
       return [];
-    }else if(response.data.items.item.length === undefined){
-      return [{...response.data.items.item, 거래금액: Number(response.data.items.item.거래금액.trim().replace(",", ""))}];
-    }else{
+    } else if (response.data.items.item.length === undefined) {
+      return [
+        {
+          ...response.data.items.item,
+          거래금액: Number(
+            response.data.items.item.거래금액.trim().replace(",", "")
+          ),
+        },
+      ];
+    } else {
       return response.data.items.item.map((data) => {
         return {
           ...data,

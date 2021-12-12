@@ -2,19 +2,19 @@ import { useCallback, useReducer } from "react";
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'CHANGE':
+    case "CHANGE":
       return {
         ...state,
-        [action.name]: action.value
+        [action.name]: action.value,
       };
-    case 'SET':
+    case "SET":
       return {
         ...state,
-        [action.name]: action.value
+        [action.name]: action.value,
       };
-    case 'RESET':
+    case "RESET":
       return Object.keys(state).reduce((acc, current) => {
-        acc[current] = '';
+        acc[current] = "";
         return acc;
       }, {});
     default:

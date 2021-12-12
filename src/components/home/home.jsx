@@ -7,14 +7,14 @@ import React, {
 } from "react";
 // import "./home.css";
 import AptInfo from "../aptInfo/aptInfo";
-import Footer from "../Footer";
 import SearchBar from "../SearchBar";
 import useInputs from "../../Hooks/useInputs";
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from "@material-ui/core";
 import Header from "../header/header";
 
-import styles from './home.module.css';
+import styles from "./home.module.css";
 import { useHistory } from "react-router";
+import Footer from "../footer/footer";
 
 const initialState = {
   inquiryPeriodList: [1, 3, 6, 12],
@@ -22,23 +22,30 @@ const initialState = {
   filters: [],
 };
 
-
 function reducer(state, action) {
   switch (action.type) {
     case "REGIST_FILTER":
       const sameFilter = state.filters.filter((data) => {
-        return data.aptSize === action.filter.aptSize && data.aptName === action.filter.aptName;
+        return (
+          data.aptSize === action.filter.aptSize &&
+          data.aptName === action.filter.aptName
+        );
       });
-      return sameFilter.length === 0 ? {
-        // inputs: initialState.inputs,
-        ...state, // 위와 같은 표현
-        filters: [...state.filters, { ...action.filter, id: new Date() }],
-      } : {...state};
+      return sameFilter.length === 0
+        ? {
+            // inputs: initialState.inputs,
+            ...state, // 위와 같은 표현
+            filters: [...state.filters, { ...action.filter, id: new Date() }],
+          }
+        : { ...state };
     case "REGIST_FILTERS":
       return {
         // inputs: initialState.inputs,
         ...state, // 위와 같은 표현
-        filters: action.filters.map((filter) => ({ ...filter, id: new Date() })),
+        filters: action.filters.map((filter) => ({
+          ...filter,
+          id: new Date(),
+        })),
       };
     case "REMOVE_FILTER":
       return {
@@ -49,31 +56,44 @@ function reducer(state, action) {
       };
     case "RESET_FILTER":
       return {
-        ...action.initialState
+        ...action.initialState,
       };
     default:
       return state;
   }
 }
 
-const Home = ({ openApi, authService }) => {
+const Home = ({ openApi, authService, aptService }) => {
   const historyState = useHistory().state;
   const [userId, setUserId] = useState(historyState && historyState.id);
   const history = useHistory();
+
+  const [myApt, setMyApt] = useState({
+    kaptCode: null,
+    kaptName: null,
+    sigunguCode: null,
+  });
+
+  // useEffect(() => {
+  //   aptService.getMyApt(userId, (data) => {
+  //     console.log("aptService.getMyApt >> ", data);
+  //     setMyApt(data);
+  //   });
+  // }, [userId]);
+
   const onLogout = useCallback(() => {
     authService.logout();
   }, [authService]);
 
   useEffect(() => {
-    authService.onAuthChange(user => {
+    authService.onAuthChange((user) => {
       if (user) {
         setUserId(user.uid);
       } else {
-        history.push('/');
+        history.push("/");
       }
     });
   }, [authService, userId, history]);
-
 
   let [loadingIndicator, setLoadingIndicator] = useState(true);
 
@@ -90,7 +110,7 @@ const Home = ({ openApi, authService }) => {
   const [aptSizeObj, setAptSizeObj] = useState({});
   const [selectedSizeList, setSelectedSizeList] = useState([]);
 
-  const [{ aptName, aptSize, inquiryPeriod }, onChange, onSet, reset] = useInputs({
+  const [{ aptName, aptSize, inquiryPeriod }, onChange, onSet] = useInputs({
     aptName: "",
     aptSize: "",
     inquiryPeriod: "1",
@@ -98,11 +118,11 @@ const Home = ({ openApi, authService }) => {
 
   const onLoading = () => {
     setLoadingIndicator(true);
-  }
+  };
 
   const offLoading = () => {
     setLoadingIndicator(false);
-  }
+  };
 
   const { filters } = state;
 
@@ -112,18 +132,45 @@ const Home = ({ openApi, authService }) => {
 
   useEffect(() => {
     setSelectedSizeList(aptSizeObj[aptName]);
-    aptSizeObj[aptName] && onSet({ name: 'aptSize', value: aptSizeObj[aptName][0] });
+    aptSizeObj[aptName] &&
+      onSet({ name: "aptSize", value: aptSizeObj[aptName][0] });
   }, [aptName]);
 
   useEffect(() => {
     onLoading();
-    openApi
-      .getAllAptInfo({ calcMonth: inquiryPeriod })
-      .then((data) => {
-        console.log(`data : ${data.length}`);
-        setAllAptInfo(data);
-      });
-  }, [inquiryPeriod]);
+
+    aptService.getMyApt(userId, (data) => {
+      setMyApt(data);
+    });
+  }, [userId]);
+
+  useEffect(() => {
+    onLoading();
+
+    myApt.sigunguCode &&
+      openApi
+        .getAllAptInfo({
+          sigunguCode: myApt.sigunguCode,
+          calcMonth: inquiryPeriod,
+        })
+        .then((data) => {
+          console.log(`data : ${data.length}`);
+          setAllAptInfo(data);
+        });
+  }, [myApt, inquiryPeriod]);
+
+  /**
+   * userId 변경 시
+   * 1. 내 아파트 정보 갱신
+   * 2. 주변 아파트 시세 정보 갱신
+   *
+   * myApt 변경 시
+   * 1. 내 아파트 정보 갱신
+   * 2. 주변 아파트 시세 정보 갱신
+   *
+   * inquiryPeriod 변경 시
+   * 1. 주변 아파트 시세 정보 갱신
+   */
 
   useEffect(() => {
     if (!allAptInfo.length) {
@@ -131,7 +178,8 @@ const Home = ({ openApi, authService }) => {
     }
     console.log(`allAptInfo useMemo`);
     setYulgokAptInfo(
-      openApi.getFilterAptInfo({ items: allAptInfo, filterAptName: "율곡" })
+      // openApi.getFilterAptInfo({ items: allAptInfo, filterAptName: "율곡" })
+      openApi.getFilterAptInfo({ items: allAptInfo, kaptCode: myApt.kaptCode })
     );
     // console.log(openApi.getFilterAptInfo({ items: allAptInfo }).newestDealApts);
     setNearAptPriceInfo(
@@ -139,7 +187,10 @@ const Home = ({ openApi, authService }) => {
     );
     const aptNameList = openApi.getAptNameList({ items: allAptInfo });
     setAptNameList(aptNameList);
-    const aptSizeList = openApi.getAptSizeList({ items: allAptInfo, names: aptNameList });
+    const aptSizeList = openApi.getAptSizeList({
+      items: allAptInfo,
+      names: aptNameList,
+    });
 
     setAptSizeObj(aptSizeList);
 
@@ -152,7 +203,6 @@ const Home = ({ openApi, authService }) => {
     let initFilter = [...filters];
 
     if (!filters.length) {
-
       initFilter = [
         { aptName: "한라주공4", aptSize: 41.85 },
         { aptName: "한라주공4", aptSize: 51.66 },
@@ -169,7 +219,7 @@ const Home = ({ openApi, authService }) => {
       const filterSaved = localStorage.getItem("aptInfoFilter");
       if (filterSaved && JSON.parse(filterSaved).length) {
         initFilter = JSON.parse(filterSaved);
-        document.querySelector('.filter-addon').style.display = 'block';
+        document.querySelector(".filter-addon").style.display = "block";
       }
       // console.log(initFilter);
       // for (const filter of initFilter) {
@@ -186,8 +236,7 @@ const Home = ({ openApi, authService }) => {
       type: "REGIST_FILTERS",
       filters: initFilter,
     });
-
-  }, [allAptInfo])
+  }, [allAptInfo]);
 
   useMemo(() => {
     const result = [];
@@ -223,17 +272,17 @@ const Home = ({ openApi, authService }) => {
   };
 
   const onFilterRegist = useCallback(() => {
-    if (!aptName){
-      alert('아파트명을 선택하세요.');
+    if (!aptName) {
+      alert("아파트명을 선택하세요.");
       document.querySelector("#aptName").focus();
-      return ;
+      return;
     }
 
-    console.log(`aptSize :: ${aptSize}`)
-    if (!aptSize){
-      alert('전용면적을 선택하세요.');
+    console.log(`aptSize :: ${aptSize}`);
+    if (!aptSize) {
+      alert("전용면적을 선택하세요.");
       document.querySelector("#aptSize").focus();
-      return ;
+      return;
     }
 
     dispatch({
@@ -243,7 +292,7 @@ const Home = ({ openApi, authService }) => {
         aptSize: Number(aptSize),
       },
     });
-    document.querySelector('.filter-addon').style.display = 'block';
+    document.querySelector(".filter-addon").style.display = "block";
   });
 
   const onFilterDelete = useCallback((filter) => {
@@ -255,24 +304,28 @@ const Home = ({ openApi, authService }) => {
         aptSize: filter.aptSize,
       },
     });
-    document.querySelector('.filter-addon').style.display = 'block';
+    document.querySelector(".filter-addon").style.display = "block";
   });
 
   const onFilterSave = () => {
-    if (window.confirm('이 기능은 새로고침해도 현재 필터를 유지하는 기능입니다. 필터를 저장하시겠습니까?')) {
+    if (
+      window.confirm(
+        "이 기능은 새로고침해도 현재 필터를 유지하는 기능입니다. 필터를 저장하시겠습니까?"
+      )
+    ) {
       localStorage.setItem("aptInfoFilter", JSON.stringify(filters));
     }
   };
 
   const onFilterReset = () => {
     localStorage.removeItem("aptInfoFilter");
-    alert('로컬에 저장된 필터가 초기화 되었습니다.');
+    alert("로컬에 저장된 필터가 초기화 되었습니다.");
     document.location.reload();
   };
 
   const onClickAddFilter = () => {
     setIsVisibleSearchbox(!isVisibleSearchbox);
-    console.log('onClickAddFilter clicked~!');
+    console.log("onClickAddFilter clicked~!");
   };
 
   return (
@@ -294,6 +347,7 @@ const Home = ({ openApi, authService }) => {
           filters={filters || []}
           onFilterDelete={onFilterDelete}
           isVisibleSearchbox={isVisibleSearchbox}
+          myApt={myApt}
         />
         <SearchBar
           // onSearchRangeChange={onSearchRangeChange}
